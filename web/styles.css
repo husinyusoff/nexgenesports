@@ -14,9 +14,9 @@ body {
   display: flex; align-items: center; justify-content: center;
   z-index: 20;
 }
-.header .logo { position: absolute; height: 60px; }
-.header .umt-logo     { left: 20px;  }
-.header .esports-logo { left:100px; }
+.header .logo { position: absolute;}
+.header .umt-logo     { left: 20px;  height: 60px;  }
+.header .esports-logo { left:100px;  height: 70px; }
 .header h1 {
   color: white;
   font-size: 28px;
@@ -52,10 +52,16 @@ body {
   z-index: 10;
 }
 .sidebar a {
-  display: block; margin: 10px; padding: 10px;
-  background: #a8eaff; color: #333;
-  text-decoration: none; text-align: center;
-  border-radius: 20px; font-weight: bold;
+  display: block;
+  margin: 10px;
+  padding: 10px;
+  background: #a8eaff;
+  color: #333;
+  text-decoration: none;
+  text-align: center;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 12px;
 }
 .sidebar a:hover { background: #9deaff; }
 

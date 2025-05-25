@@ -8,7 +8,6 @@
 </head>
 <body>
   <div class="header">
-    <button id="sidebarToggle" aria-label="Toggle sidebar">☰</button>
     <img src="${pageContext.request.contextPath}/images/umt-logo.png"
          alt="UMT Logo" class="logo umt-logo">
     <img src="${pageContext.request.contextPath}/images/esports-logo.png"
