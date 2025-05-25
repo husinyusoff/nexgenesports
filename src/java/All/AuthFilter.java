@@ -4,75 +4,52 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.*;
 import java.io.IOException;
-import java.sql.*;
+import java.util.Set;
 
 @WebFilter("/*")
 public class AuthFilter implements Filter {
 
+    private static final Set<String> PUBLIC = Set.of(
+            "/index.jsp", "/login.jsp", "/register.jsp",
+            "/accessDenied.jsp", "/styles.css", "/logout.jsp",
+             "/dbtest.jsp","/RegisterServlet"
+    );
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        // nothing to do on startup
+        // nothing to do here
     }
 
     @Override
-    public void doFilter(ServletRequest req, ServletResponse res,
-                         FilterChain chain)
+    public void doFilter(ServletRequest rq, ServletResponse rs, FilterChain chain)
             throws IOException, ServletException {
-        HttpServletRequest  request  = (HttpServletRequest)  req;
-        HttpServletResponse response = (HttpServletResponse) res;
+        HttpServletRequest req = (HttpServletRequest) rq;
+        HttpServletResponse res = (HttpServletResponse) rs;
+        String path = req.getServletPath();
 
-        String uri = request.getRequestURI();
-        // Allow static resources and login paths through without auth
-        if (uri.endsWith("login.jsp")
-         || uri.endsWith("/login")
-         || uri.matches(".+\\.(css|js|png|jpg|gif)$")) {
-            chain.doFilter(req, res);
+        if (PUBLIC.contains(path) || path.startsWith("/images/")) {
+            chain.doFilter(rq, rs);
             return;
         }
 
-        HttpSession session = request.getSession(false);
-        String role = (session != null) ? (String) session.getAttribute("role") : null;
-
-        // If not logged in, redirect to login page
-        if (role == null) {
-            response.sendRedirect(request.getContextPath() + "/login.jsp");
+        HttpSession s = req.getSession(false);
+        if (s == null || s.getAttribute("username") == null) {
+            res.sendRedirect("login.jsp");
             return;
         }
 
-        // If logged in, check RBAC
-        if (!checkPermission(role, uri)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN, "You don’t have access to that page.");
+        String role = (String) s.getAttribute("role");
+        String position = (String) s.getAttribute("position");
+        if (!PermissionChecker.hasAccess(role, position, path)) {
+            res.sendRedirect("accessDenied.jsp");
             return;
         }
 
-        // All good — continue on
-        chain.doFilter(req, res);
+        chain.doFilter(rq, rs);
     }
 
     @Override
     public void destroy() {
-        // nothing to clean up on shutdown
-    }
-
-    /**
-     * Looks up the permissions table to see if this role is allowed
-     * to access this exact URI.
-     */
-    private boolean checkPermission(String role, String uri) {
-        String sql = "SELECT COUNT(*) FROM permissions WHERE role = ? AND page_uri = ?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setString(1, role);
-            ps.setString(2, uri);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next() && rs.getInt(1) > 0) {
-                    return true;
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
+        // nothing to do here
     }
 }

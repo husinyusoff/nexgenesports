@@ -6,7 +6,10 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashMap;
 import com.google.gson.Gson;
 
 @WebServlet("/bookStation")
@@ -21,34 +24,37 @@ public class BookStationServlet extends HttpServlet {
             String stationID = request.getParameter("stationID");
             String dateStr   = request.getParameter("date");
 
-            String sql = "SELECT startTime,endTime,status "
+            String sql = "SELECT startTime, endTime, status "
                        + "FROM GamingStationBooking "
-                       + "WHERE stationID=? AND date=?";
+                       + "WHERE stationID = ? AND date = ?";
 
             try (Connection conn = DBConnection.getConnection();
                  PreparedStatement ps = conn.prepareStatement(sql)) {
 
                 ps.setString(1, stationID);
-                ps.setDate(2, Date.valueOf(dateStr));
+                // Fully-qualify java.sql.Date so there's no ambiguity
+                ps.setDate(2, java.sql.Date.valueOf(dateStr));
 
-                ResultSet rs = ps.executeQuery();
-                List<Map<String,Object>> slots = new ArrayList<>();
+                try (ResultSet rs = ps.executeQuery()) {
+                    List<Map<String,Object>> slots = new ArrayList<>();
+                    while (rs.next()) {
+                        Map<String,Object> m = new HashMap<>();
+                        m.put("startTime", rs.getTime("startTime").toString());
+                        m.put("endTime",   rs.getTime("endTime").toString());
+                        m.put("booked",    "Booked".equalsIgnoreCase(rs.getString("status")));
+                        slots.add(m);
+                    }
 
-                while (rs.next()) {
-                    Map<String,Object> m = new HashMap<>();
-                    m.put("startTime", rs.getTime("startTime").toString());
-                    m.put("endTime",   rs.getTime("endTime").toString());
-                    m.put("booked",    "Booked".equalsIgnoreCase(rs.getString("status")));
-                    slots.add(m);
+                    PrintWriter out = response.getWriter();
+                    out.print(new Gson().toJson(slots));
                 }
 
-                PrintWriter out = response.getWriter();
-                out.print(new Gson().toJson(slots));
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                response.getWriter().write("{\"error\":\"Failed to fetch slots.\"}");
+                response.getWriter()
+                        .write("{\"error\":\"Failed to fetch slots.\"}");
+                e.printStackTrace();
             }
         }
     }
 }
-

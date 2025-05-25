@@ -1,47 +1,63 @@
 package All;
 
+import org.mindrot.jbcrypt.BCrypt;
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.sql.*;
 
-@WebServlet("/login")
+@WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        req.getRequestDispatcher("/login.jsp").forward(req, resp);
-    }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        String username = req.getParameter("username");
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String userID = req.getParameter("userID");
         String password = req.getParameter("password");
-
-        String sql = "SELECT role FROM users WHERE username = ? AND password = ?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setString(1, username);
-            ps.setString(2, password);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    String role = rs.getString("role");
-                    HttpSession s = req.getSession();
-                    s.setAttribute("username", username);
-                    s.setAttribute("role", role);
-                    resp.sendRedirect(req.getContextPath() + "/dashboard.jsp");
-                    return;
-                }
+        String selectedRole = req.getParameter("selectedRole");
+        try (Connection c = DBConnection.getConnection(); 
+             PreparedStatement ps = c.prepareStatement("SELECT password_hash, role, position FROM users WHERE userID=?")) {
+            ps.setString(1, userID);
+            ResultSet rs = ps.executeQuery();
+            if (!rs.next() || !BCrypt.checkpw(password, rs.getString("password_hash")) || !RoleUtils.isAllowedRole(rs.getString("role"), selectedRole)) {
+                resp.sendRedirect("login.jsp?error=badcreds");
+                return;
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+            String dbRole = rs.getString("role");
+            String position = rs.getString("position");
+            String actualRole = ("high_council".equals(dbRole) && "president".equals(position)) ? "superadmin" : selectedRole;
+            HttpSession sess = req.getSession(true);
+            sess.setAttribute("username", userID);
+            sess.setAttribute("role", actualRole);
+            sess.setAttribute("position", position);
 
-        req.setAttribute("error", "Invalid username or password");
-        req.getRequestDispatcher("/login.jsp").forward(req, resp);
+            try (PreparedStatement ups = c.prepareStatement("UPDATE users SET sessionID=? WHERE userID=?")) {
+                ups.setString(1, sess.getId());
+                ups.setString(2, userID);
+                ups.executeUpdate();
+            }
+            switch (actualRole) {
+                case "athlete":
+                    resp.sendRedirect("athleteDashboard.jsp");
+                    break;
+                case "executive_council":
+                    resp.sendRedirect("execDashboard.jsp");
+                    break;
+                case "high_council":
+                    resp.sendRedirect("adminDashboard.jsp");
+                    break;
+                case "superadmin":
+                    resp.sendRedirect("superAdmin.jsp");
+                    break;
+                case "referee":
+                    resp.sendRedirect("refereeDashboard.jsp");
+                    break;
+                default:
+                    resp.sendRedirect("accessDenied.jsp");
+                    break;
+            }
+        } catch (Exception e) {
+            throw new ServletException(e);
+        }
     }
 }
