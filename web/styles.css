@@ -1,0 +1,157 @@
+/* === Common === */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0; padding: 0;
+  background: #d3d3d3;
+  overflow-x: hidden;
+}
+
+/* === Header === */
+.header {
+  background: #38b6ff;
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 80px;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 20;
+}
+.header .logo { position: absolute; height: 60px; }
+.header .umt-logo     { left: 20px;  }
+.header .esports-logo { left:100px; }
+.header h1 {
+  color: white;
+  font-size: 28px;
+  letter-spacing: 2px;
+  margin: 0;
+}
+
+/* === Footer === */
+.footer {
+  background: #38b6ff; color: white;
+  text-align: center;
+  position: fixed; bottom: 0; left: 0; right: 0;
+  height: 50px; line-height: 50px;
+  z-index: 20;
+}
+
+/* === Container & Sidebar === */
+.container {
+  display: flex;
+  padding-top: 80px;               /* below header */
+  min-height: calc(100vh - 130px); /* above footer */
+}
+.sidebar {
+  position: fixed;
+  top: 80px; bottom: 50px; left: 0;
+  width: 180px;
+  background: #38b6ff;
+  padding-top: 60px;  /* leave room for close button */
+  overflow: hidden;
+  /* animate sliding, not resizing */
+  transform: translateX(0);
+  transition: transform 0.3s ease;
+  z-index: 10;
+}
+.sidebar a {
+  display: block; margin: 10px; padding: 10px;
+  background: #a8eaff; color: #333;
+  text-decoration: none; text-align: center;
+  border-radius: 20px; font-weight: bold;
+}
+.sidebar a:hover { background: #9deaff; }
+
+/* slide it off‐screen */
+body.sidebar-collapsed .sidebar {
+  transform: translateX(-180px);
+}
+/* shift content back */
+.content {
+  margin-left: 180px;
+  flex: 1;
+  display: flex; justify-content: center; align-items: center;
+  transition: margin-left 0.3s ease;
+}
+body.sidebar-collapsed .content {
+  margin-left: 0;
+}
+
+/* === Open/Close Toggles === */
+/* open‐toggle “pimple” */
+.open-toggle {
+  position: fixed;
+  top: 100px;   /* just under header */
+  left: 0;
+  width: 40px; height: 40px;
+  background: #38b6ff;
+  color: white; border: none;
+  border-radius: 0 20px 20px 0;
+  font-size: 24px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 15;
+}
+/* hide it when the sidebar is open */
+body:not(.sidebar-collapsed) .open-toggle {
+  display: none;
+}
+
+/* close‐toggle “×” */
+.close-toggle {
+  position: absolute;
+  top: 26px; left: 5px;
+  width: 30px; height: 30px;
+  background: #38b6ff;
+  color: white; border: none;
+  border-radius: 50%;
+  font-size: 35px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 11;
+}
+/* hide when collapsed */
+body.sidebar-collapsed .close-toggle {
+  display: none;
+}
+
+/* === Login Form === */
+.login-container {
+  background: white; padding: 40px;
+  border-radius: 20px; width: 360px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.login-container h2 {
+  text-align: center; margin-bottom: 20px; color: #333;
+}
+
+/* 2×2 grid of radios, circle on left */
+.roles-grid {
+  display: grid;
+  grid-template-columns: max-content max-content;
+  row-gap: 10px; column-gap: 100px;
+  margin-bottom: 20px;
+}
+.roles-grid label {
+  display: flex; align-items: center;
+  gap: 8px; font-weight: bold;
+}
+
+/* rest of form */
+.login-container label:not(.roles-grid label) {
+  display: block; margin-top: 10px; font-weight: bold;
+}
+.login-container input[type="text"],
+.login-container input[type="password"] {
+  width: 100%; padding: 10px; margin-top: 5px;
+  border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;
+}
+.login-container a.forgot {
+  display: block; margin-top: 5px;
+  font-size: 12px; color: #777; text-decoration: none;
+}
+.login-container button {
+  display: block; width: 120px;
+  margin: 20px auto 0; padding: 10px;
+  background: #38b6ff; color: white;
+  border: none; border-radius: 20px;
+  cursor: pointer; font-size: 16px;
+}
+.login-container button:hover {
+  background: #259de3;
+}

@@ -26,7 +26,7 @@ public class LoginServlet extends HttpServlet {
                 if (!rs.next()
                     || !BCrypt.checkpw(password, rs.getString("password_hash"))
                     || !RoleUtils.isAllowedRole(rs.getString("role"), selectedRole)) {
-                    resp.sendRedirect("login.jsp?error=badcreds");
+                    resp.sendRedirect(req.getContextPath() + "/login.jsp?error=badcreds");
                     return;
                 }
 
