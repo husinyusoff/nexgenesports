@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page session="true" %>
 <!DOCTYPE html>
 <html>
@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
   <div class="header">
     <img src="${pageContext.request.contextPath}/images/umt-logo.png"
          alt="UMT Logo" class="logo umt-logo">
@@ -20,11 +21,22 @@
     </div>
   </div>
 
+  <!-- ☰ open button -->
+  <button id="openToggle" class="open-toggle">☰</button>
+
   <div class="container">
-    <jsp:include page="sidebar.jsp"/>
+    <!-- one sidebar wrapper -->
+    <div class="sidebar">
+      <!-- × close button -->
+      <button id="closeToggle" class="close-toggle">×</button>
+      <!-- dynamic links -->
+      <jsp:include page="sidebar.jsp"/>
+    </div>
+
     <div class="content">
+      <!-- your dashboard content here -->
       <div class="dashboard-container">
-        <img src="${pageContext.request.contextPath}/images/welcome-wordcloud.png"
+        <img src="${pageContext.request.contextPath}/images/welcome.png"
              alt="Welcome" class="welcome-image">
       </div>
     </div>
@@ -35,11 +47,12 @@
   </div>
 
   <script>
-    document
-      .getElementById('sidebarToggle')
-      .addEventListener('click', () =>
-        document.body.classList.toggle('sidebar-collapsed')
-      );
+    document.getElementById('openToggle').addEventListener('click', () =>
+      document.body.classList.remove('sidebar-collapsed')
+    );
+    document.getElementById('closeToggle').addEventListener('click', () =>
+      document.body.classList.add('sidebar-collapsed')
+    );
   </script>
 </body>
 </html>

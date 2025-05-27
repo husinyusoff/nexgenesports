@@ -1,19 +1,26 @@
 package All;
 
-public class RoleUtils {
+import java.util.List;
 
-    public static boolean isAllowedRole(String dbRole, String selRole) {
-        switch (dbRole) {
-            case "athlete":
-                return "athlete".equals(selRole);
-            case "executive_council":
-                return selRole.equals("athlete") || selRole.equals("executive_council");
-            case "high_council":
-                return selRole.equals("athlete") || selRole.equals("executive_council") || selRole.equals("high_council");
-            case "referee":
-                return "referee".equals(selRole);
-            default:
-                return false;
+public class RoleUtils {
+    /**
+     * @param effectiveRoles list of role-names in the session
+     * @param permRole       a single role from the permissions table
+     * @param position       the user's position (may be null)
+     * @return true if permRole is satisfied via inheritance or exact match
+     */
+    public static boolean isAllowedRole(
+        List<String> effectiveRoles,
+        String permRole,
+        String position
+    ) {
+        // president → superadmin override
+        if (effectiveRoles.contains("high_council")
+            && "president".equals(position)
+            && "superadmin".equals(permRole)) {
+            return true;
         }
+        // otherwise, inherit if permRole is in the list
+        return effectiveRoles.contains(permRole);
     }
 }

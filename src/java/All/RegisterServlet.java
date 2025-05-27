@@ -1,8 +1,6 @@
-// src/All/RegisterServlet.java
 package All;
 
 import org.mindrot.jbcrypt.BCrypt;
-
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
@@ -15,85 +13,72 @@ public class RegisterServlet extends HttpServlet {
   protected void doPost(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
 
-    ServletContext ctx = getServletContext();
-    ctx.log("[RegisterServlet] doPost() invoked");
-
-    String userID   = req.getParameter("userID");
-    String name     = req.getParameter("name");
-    String pass     = req.getParameter("password");
-    String confirm  = req.getParameter("confirmPassword");
-    String phone    = req.getParameter("phoneNumber");
-    String role     = req.getParameter("role");
-    String position = req.getParameter("position");
-    String gpIdStr  = req.getParameter("gamingPassID");
-
-    ctx.log("[RegisterServlet] Params – userID=" + userID
-            + ", name=" + name + ", role=" + role
-            + ", position=" + position
-            + ", gamingPassID=" + gpIdStr);
+    String userID        = req.getParameter("userID");
+    String name          = req.getParameter("name");
+    String pass          = req.getParameter("password");
+    String confirm       = req.getParameter("confirmPassword");
+    String phone         = req.getParameter("phoneNumber");
+    String role          = req.getParameter("role");
+    String position      = req.getParameter("position");
+    String clubSessionID = req.getParameter("clubSessionID");
+    String gpIdStr       = req.getParameter("gamingPassID");
 
     // 1) Password match check
     if (!pass.equals(confirm)) {
-      ctx.log("[RegisterServlet] Password mismatch for userID=" + userID);
       req.setAttribute("message", "❌ Passwords do not match.");
       req.getRequestDispatcher("registerResult.jsp").forward(req, resp);
       return;
     }
 
-    // 2) Hash the password
     String hash = BCrypt.hashpw(pass, BCrypt.gensalt());
-    ctx.log("[RegisterServlet] Password hashed");
-
-    String sql = "INSERT INTO users "
-               + "(userID, name, password_hash, phoneNumber, role, position, gamingPassID) "
-               + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+    Integer rpId;
 
     try (Connection c = DBConnection.getConnection();
-         PreparedStatement ps = c.prepareStatement(sql)) {
-
-      ctx.log("[RegisterServlet] Got DB connection and preparing INSERT");
-
-      ps.setString(1, userID);
-      ps.setString(2, name);
-      ps.setString(3, hash);
-      ps.setString(4, phone);
-      ps.setString(5, role);
-
-      if (position == null || position.isEmpty()) {
-        ps.setNull(6, Types.VARCHAR);
-        ctx.log("[RegisterServlet] position → NULL");
-      } else {
-        ps.setString(6, position);
-        ctx.log("[RegisterServlet] position → " + position);
+         PreparedStatement getRp = c.prepareStatement(
+           "SELECT id FROM role_positions WHERE role = ? "
+         + (position==null||position.isEmpty()
+            ? "AND position IS NULL"
+            : "AND position = ?"))) {
+      getRp.setString(1, role);
+      if (position!=null && !position.isEmpty()) {
+        getRp.setString(2, position);
+      }
+      try (ResultSet r = getRp.executeQuery()) {
+        if (!r.next()) {
+          req.setAttribute("message", "❌ Invalid role/position.");
+          req.getRequestDispatcher("registerResult.jsp").forward(req, resp);
+          return;
+        }
+        rpId = r.getInt("id");
       }
 
-      if (gpIdStr == null || gpIdStr.isEmpty()) {
-        ps.setNull(7, Types.INTEGER);
-        ctx.log("[RegisterServlet] gamingPassID → NULL");
-      } else {
-        int gpId = Integer.parseInt(gpIdStr);
-        ps.setInt(7, gpId);
-        ctx.log("[RegisterServlet] gamingPassID → " + gpId);
+      // 2) Insert new user
+      String sql =
+        "INSERT INTO users "
+      + "(userID, name, password_hash, phoneNumber, rpid, clubSessionID, gamingPassID) "
+      + "VALUES (?,?,?,?,?,?,?)";
+      try (PreparedStatement ps = c.prepareStatement(sql)) {
+        ps.setString(1, userID);
+        ps.setString(2, name);
+        ps.setString(3, hash);
+        ps.setString(4, phone);
+        ps.setInt(5, rpId);
+        ps.setString(6, clubSessionID);
+        if (gpIdStr==null || gpIdStr.isEmpty()) {
+          ps.setNull(7, Types.INTEGER);
+        } else {
+          ps.setInt(7, Integer.parseInt(gpIdStr));
+        }
+        int rows = ps.executeUpdate();
+        req.setAttribute("message",
+          rows > 0 ? "✅ Registration successful!" : "⚠️ No rows inserted.");
       }
-
-      int rows = ps.executeUpdate();
-      ctx.log("[RegisterServlet] executeUpdate() returned rows=" + rows);
-
-      if (rows > 0) {
-        req.setAttribute("message", "✅ Registration successful! Rows inserted: " + rows);
-      } else {
-        req.setAttribute("message", "⚠️ No rows were inserted. Check your SQL/table.");
-      }
-
     } catch (SQLIntegrityConstraintViolationException e) {
-      ctx.log("[RegisterServlet] Duplicate key for userID=" + userID, e);
       req.setAttribute("message", "❌ That UserID already exists.");
     } catch (Exception e) {
-      ctx.log("[RegisterServlet] Unexpected error", e);
       req.setAttribute("message", "❌ Registration failed: " + e.getMessage());
     }
 
-    // 3) Forward to result page so you can see both the message and tail the logs
     req.getRequestDispatcher("registerResult.jsp").forward(req, resp);
   }
 }

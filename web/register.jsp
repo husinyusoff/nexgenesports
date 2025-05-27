@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page session="true" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,82 +7,71 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
+  <!-- Header -->
   <div class="header">
-    <button id="sidebarToggle" aria-label="Toggle sidebar">☰</button>
     <img src="${pageContext.request.contextPath}/images/umt-logo.png"
          alt="UMT Logo" class="logo umt-logo">
-    <img src="${pageContext.request.contextPath}/images/esports-logo.png"
+    <img src="${pageContext.request.contextPath}/images/esports-logo.png"`
          alt="Esports Logo" class="logo esports-logo">
     <h1>NEXGEN ESPORTS</h1>
   </div>
 
+  <!-- ☰ open-sidebar button -->
+  <button id="openToggle" class="open-toggle">☰</button>
+
   <div class="container">
+    <!-- Sidebar -->
     <div class="sidebar">
-      <a href="login.jsp">LOGIN</a>
-      <a href="register.jsp">SIGN UP</a>
+      <!-- × close-sidebar button INSIDE sidebar -->
+      <button id="closeToggle" class="close-toggle">×</button>
+
+      <a href="${pageContext.request.contextPath}/login.jsp">Login</a>
+      <a href="${pageContext.request.contextPath}/register.jsp">Sign Up</a>
     </div>
 
+    <!-- Main content -->
     <div class="content">
       <div class="register-container">
         <h2>SIGN UP</h2>
 
         <form action="RegisterServlet" method="post">
-          <div class="roles">
-            <input type="radio" name="studentType" value="umt" id="umtStudent" checked/>
-            <label for="umtStudent">UMT Student</label>
-            <input type="radio" name="studentType" value="non" id="nonUmt"/>
-            <label for="nonUmt">Not UMT Student</label>
-          </div>
+          <!-- your other fields… -->
 
-          <label for="matricOrUser">Matric Number (UMT) | User ID (Non-UMT)</label>
-          <input id="matricOrUser" name="userID" required/>
+          <!-- Club session dropdown -->
+          <label for="clubSessionID">Club Session</label>
+          <select id="clubSessionID" name="clubSessionID" required>
+            <option value="2024/2025">2024/2025</option>
+            <option value="2025/2026">2025/2026</option>
+          </select>
 
-          <label for="icNumber">IC Number (0000-00-0000)</label>
-          <input id="icNumber" name="icNumber" required/>
-
-          <label for="fullName">Full Name (CAPITAL LETTER)</label>
-          <input id="fullName" name="fullName" required/>
-
-          <label for="password">Password</label>
-          <input id="password" name="password" type="password" required/>
-
-          <label for="phone">Phone Number</label>
-          <input id="phone" name="phoneNumber"/>
-
-          <div class="roles">
-            <span>Register as Esports Club Member (RM10)?</span><br/>
-            <input type="radio" name="member" value="yes" id="memberYes" checked/>
-            <label for="memberYes">Yes</label>
-            <input type="radio" name="member" value="no" id="memberNo"/>
-            <label for="memberNo">Not Interested</label>
-          </div>
+          <label for="gamingPassID">GamingPass ID</label>
+          <input id="gamingPassID" name="gamingPassID"/>
 
           <button type="submit">Register</button>
         </form>
 
-        <c:if test="${param.error=='exists'}">
-          <p style="color:red">UserID already exists.</p>
-        </c:if>
-        <c:if test="${param.error=='mismatch'}">
-          <p style="color:red">Passwords do not match.</p>
-        </c:if>
-        <c:if test="${param.error=='sql'}">
-          <p style="color:red">Registration failed. Please try again.</p>
-        </c:if>
+        <!-- inline error/message -->
+        <% if (request.getAttribute("message") != null) { %>
+          <p class="error"><%= request.getAttribute("message") %></p>
+        <% } %>
       </div>
     </div>
   </div>
 
+  <!-- Footer -->
   <div class="footer">
     © NexGen Esports 2025 All Rights Reserved.
   </div>
 
+  <!-- Toggle script -->
   <script>
-    document
-      .getElementById('sidebarToggle')
-      .addEventListener('click', () =>
-        document.body.classList.toggle('sidebar-collapsed')
-      );
+    document.getElementById('openToggle').addEventListener('click', () =>
+      document.body.classList.remove('sidebar-collapsed')
+    );
+    document.getElementById('closeToggle').addEventListener('click', () =>
+      document.body.classList.add('sidebar-collapsed')
+    );
   </script>
 </body>
 </html>

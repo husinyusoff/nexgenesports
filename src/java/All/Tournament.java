@@ -8,6 +8,6 @@ package All;
  *
  * @author husin
  */
-public class LogoutServlet {
+class Tournament {
     
 }
