@@ -45,7 +45,7 @@
       <ul class="dropdown-content">
         <!-- 2a) My Profile (everyone) -->
         <li>
-          <a href="${pageContext.request.contextPath}/manageProfile.jsp">
+          <a href= manageProfile.jsp>
             My Profile
           </a>
         </li>
