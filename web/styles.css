@@ -1,313 +1,688 @@
+/* ============================================================ */
+/*                 NexGen Esports: Unified styles               */
+/* ============================================================ */
+
 /* === Error messages === */
 .error {
-    color: #c00;
-    margin: 8px 0;
-    text-align: center;
-    font-weight: bold;
+  color: #c00;
+  margin: 8px 0;
+  text-align: center;
+  font-weight: bold;
 }
 
 /* === Base & Layout === */
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: #d3d3d3;
-    overflow-x: hidden;
-}
-.header {
-    background: #38b6ff;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 64px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 20;
-}
-.header .logo {
-    position: absolute;
-}
-.header .umt-logo {
-    left: 16px;
-    height: 48px;
-}
-.header .esports-logo {
-    left: 80px;
-    height: 56px;
-}
-.header h1 {
-    color: white;
-    font-size: 22px;
-    letter-spacing: 2px;
-    margin: 0;
-}
-.footer {
-    background: #38b6ff;
-    color: white;
-    text-align: center;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 40px;
-    line-height: 40px;
-    z-index: 20;
-}
-.container {
-    display: flex;
-    padding-top: 64px;
-    min-height: calc(100vh - 104px);
-}
-.sidebar {
-    position: fixed;
-    top: 64px;
-    bottom: 40px;
-    left: 0;
-    width: 144px;
-    background: #38b6ff;
-    padding-top: 48px;
-    transform: translateX(0);
-    transition: transform .3s ease;
-    z-index: 10;
-}
-body.sidebar-collapsed .sidebar {
-    transform: translateX(-144px);
-}
-.content {
-    margin-left: 144px;
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: margin-left .3s ease;
-}
-body.sidebar-collapsed .content {
-    margin-left: 0;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #d3d3d3;
+  overflow-x: hidden;
 }
 
-/* === Sidebar Links & Dropdown === */
+/* Header */
+.header {
+  background: #38b6ff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+}
+.header .logo {
+  position: absolute;
+}
+.header .umt-logo {
+  left: 16px;
+  height: 48px;
+}
+.header .esports-logo {
+  left: 80px;
+  height: 56px;
+}
+.header h1 {
+  color: white;
+  font-size: 22px;
+  letter-spacing: 2px;
+  margin: 0;
+}
+.header .user-avatar {
+  position: absolute;
+  right: 20px;
+  top: 18px;
+  display: flex;
+  align-items: center;
+}
+.header .user-avatar img {
+  height: 34px;
+  margin-right: 8px;
+}
+.header .user-avatar span {
+  color: white;
+  font-weight: bold;
+}
+
+/* Footer */
+.footer {
+  background: #38b6ff;
+  color: white;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  line-height: 40px;
+  z-index: 20;
+}
+
+/* Container & Content */
+.container {
+  display: flex;
+  padding-top: 64px; /* push down below header */
+  min-height: calc(100vh - 104px); /* header + footer */
+}
+.content {
+  margin-left: 144px; /* matches sidebar width */
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: margin-left .3s ease;
+}
+body.sidebar-collapsed .content {
+  margin-left: 0;
+}
+
+/* === Sidebar & Collapse Behavior === */
+.sidebar {
+  position: fixed;
+  top: 64px;
+  bottom: 40px;
+  left: 0;
+  width: 144px;
+  background: #38b6ff;
+  padding-top: 48px;
+  transform: translateX(0);
+  transition: transform .3s ease;
+  z-index: 10;
+}
+body.sidebar-collapsed .sidebar {
+  transform: translateX(-144px);
+}
+
+/* Sidebar Links & Dropdown */
 .sidebar nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 .sidebar nav ul li {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 .sidebar nav ul li a,
 .sidebar nav ul li .dropdown-btn,
 .sidebar nav ul li .logout-btn {
-    display: block;
-    margin: 8px;
-    padding: 8px;
-    background: #a8eaff;
-    color: #333;
-    text-decoration: none;
-    text-align: center;
-    border-radius: 16px;
-    font-weight: bold;
-    font-size: 10px;
-    transition: background .2s ease;
+  display: block;
+  margin: 8px;
+  padding: 8px;
+  background: #a8eaff;
+  color: #333;
+  text-decoration: none;
+  text-align: center;
+  border-radius: 16px;
+  font-weight: bold;
+  font-size: 10px;
+  transition: background .2s ease;
 }
 .sidebar nav ul li a:hover,
 .sidebar nav ul li .dropdown-btn:hover {
-    background: #9deaff;
+  background: #9deaff;
 }
 .sidebar nav ul li .logout-btn {
-    background: #e62828;
-    color: white;
+  background: #e62828;
+  color: white;
 }
 .sidebar nav ul li .logout-btn:hover {
-    background: #c91f1f;
+  background: #c91f1f;
 }
 .sidebar nav ul li.dropdown {
-    position: relative;
-    z-index: 0;
+  position: relative;
+  z-index: 0;
 }
 .sidebar nav ul li.dropdown .dropdown-btn {
-    position: relative;
-    z-index: 101;
+  position: relative;
+  z-index: 101;
 }
 .sidebar nav ul li.dropdown .dropdown-btn::after {
-    content: "";
-    position: absolute;
-    left: 6px;
-    top: 50%;
-    transform: translateY(-50%);
-    border-left: 4px solid transparent;
-    border-right: 4px solid transparent;
-    border-top: 4px solid #333;
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid #333;
 }
 .sidebar nav ul li.dropdown .dropdown-content {
-    display: none;
-    position: absolute;
-    top: 100%;
-    margin-top: -16px;
-    left: 8px;
-    right: 8px;
-    background: #a8eaff;
-    border-radius: 0 0 16px 16px;
-    overflow: hidden;
-    z-index: 100;
+  display: none;
+  position: absolute;
+  top: 100%;
+  margin-top: -16px;
+  left: 8px;
+  right: 8px;
+  background: #a8eaff;
+  border-radius: 0 0 16px 16px;
+  overflow: hidden;
+  z-index: 100;
 }
-
-.sidebar nav ul li.dropdown:hover{
-    z-index: 100;
+.sidebar nav ul li.dropdown:hover {
+  z-index: 100;
 }
-
 .sidebar nav ul li.dropdown:hover .dropdown-content {
-    display: block;
+  display: block;
 }
 .sidebar nav ul li.dropdown .dropdown-content li a {
-    margin: 0;
-    padding: 0;
-    height: 32px;
-    line-height: 32px;
-    background: #a8eaff;
-    color: #333;
-    text-decoration: none;
-    font-size: 10px;
-    font-weight: bold;
-    text-align: center;
-    border-top: 1px solid #9deaff;
-    transition: background .2s ease;
+  margin: 0;
+  padding: 0;
+  height: 32px;
+  line-height: 32px;
+  background: #a8eaff;
+  color: #333;
+  text-decoration: none;
+  font-size: 10px;
+  font-weight: bold;
+  text-align: center;
+  border-top: 1px solid #9deaff;
+  transition: background .2s ease;
 }
 .sidebar nav ul li.dropdown .dropdown-content li:first-child a {
-    border-top: none;
-    margin-top: 16px;
+  border-top: none;
+  margin-top: 16px;
 }
 .sidebar nav ul li.dropdown .dropdown-content li a:hover {
-    background: #82d4ff;
+  background: #82d4ff;
 }
 
-/* === Toggles === */
+/* === Sidebar Toggle Buttons === */
 .open-toggle {
-    position: fixed;
-    top: 80px;
-    left: 0;
-    width: 32px;
-    height: 32px;
-    background: #38b6ff;
-    color: white;
-    border: none;
-    border-radius: 0 16px 16px 0;
-    font-size: 19px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 15;
+  position: fixed;
+  top: 80px;
+  left: 0;
+  width: 32px;
+  height: 32px;
+  background: #38b6ff;
+  color: white;
+  border: none;
+  border-radius: 0 16px 16px 0;
+  font-size: 19px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 15;
 }
 body:not(.sidebar-collapsed) .open-toggle {
-    display: none;
+  display: none;
 }
 .close-toggle {
-    position: absolute;
-    top: 21px;
-    left: 4px;
-    width: 24px;
-    height: 24px;
-    background: #38b6ff;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    font-size: 28px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 11;
+  position: absolute;
+  top: 21px;
+  left: 4px;
+  width: 24px;
+  height: 24px;
+  background: #38b6ff;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 28px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 11;
 }
 body.sidebar-collapsed .close-toggle {
-    display: none;
+  display: none;
 }
 
 /* === Login Form === */
 .login-container {
-    background: white;
-    padding: 32px;
-    border-radius: 16px;
-    width: 260px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  background: white;
+  padding: 32px;
+  border-radius: 16px;
+  width: 260px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 .login-container h2 {
-    text-align: center;
-    margin: 0 0 12px;
-    font-size: 1.3rem;
+  text-align: center;
+  margin: 0 0 12px;
+  font-size: 1.3rem;
 }
 .roles-grid {
-    display: grid;
-    grid-template-columns: max-content max-content;
-    row-gap: 4px;
-    column-gap: 30px;
-    margin-bottom: 16px;
+  display: grid;
+  grid-template-columns: max-content max-content;
+  row-gap: 4px;
+  column-gap: 30px;
+  margin-bottom: 16px;
 }
 .roles-grid label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.85rem;
-    font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: bold;
 }
 .login-container label:not(.roles-grid label) {
-    display: block;
-    margin-top: 8px;
-    font-size: 0.9rem;
-    font-weight: bold;
+  display: block;
+  margin-top: 8px;
+  font-size: 0.9rem;
+  font-weight: bold;
 }
 .login-container input[type="text"],
-.login-container input[type="password"] {
-    width: 100%;
-    padding: 8px;
-    margin-top: 4px;
-    font-size: 0.9rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
+.login-container input[type="password"],
+.login-container input[type="month"] {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  font-size: 0.9rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
 }
 .password-wrapper {
-    position: relative;
+  position: relative;
 }
 .password-wrapper .eye-icon {
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 16px;
-    height: 16px;
-    background: url('data:image/svg+xml;utf8,<svg fill="%23333" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path d="M32 16c-13.255 0-24 10.745-24 16s10.745 16 24 16 24-10.745 24-16-10.745-16-24-16zm0 28c-6.627 0-12-5.373-12-12s5.373-12 12-12 12 5.373 12 12-5.373 12-12 12zm0-20a8 8 0 100 16 8 8 0 000-16z"/></svg>') no-repeat center;
-    cursor: pointer;
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  background: url('data:image/svg+xml;utf8,<svg fill="%23333" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path d="M32 16c-13.255 0-24 10.745-24 16s10.745 16 24 16 24-10.745 24-16-10.745-16-24-16zm0 28c-6.627 0-12-5.373-12-12s5.373-12 12-12 12 5.373 12 12-5.373 12-12 12zm0-20a8 8 0 100 16 8 8 0 000-16z"/></svg>') no-repeat center;
+  cursor: pointer;
 }
 .login-container a.forgot {
-    display: block;
-    margin-top: 4px;
-    font-size: 10px;
-    color: #777;
-    text-decoration: none;
+  display: block;
+  margin-top: 4px;
+  font-size: 10px;
+  color: #777;
+  text-decoration: none;
 }
 .login-container button {
-    display: block;
-    width: 96px;
-    margin: 16px auto 0;
-    padding: 8px;
-    background: #38b6ff;
-    color: white;
-    border: none;
-    border-radius: 16px;
-    cursor: pointer;
-    font-size: 13px;
+  display: block;
+  width: 96px;
+  margin: 16px auto 0;
+  padding: 8px;
+  background: #38b6ff;
+  color: white;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  font-size: 13px;
 }
 .login-container button:hover {
-    background: #259de3;
+  background: #259de3;
 }
 
 /* === Dashboard Image === */
 .dashboard-container .welcome-image {
-    max-width: 80%;
-    height: auto;
-    display: block;
-    margin: 0 auto;
+  max-width: 80%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+/* ============================================================ */
+/*            Styles Specific to selectStation.jsp              */
+/* ============================================================ */
+
+/* Card Container */
+.select-station-box {
+  background: #fff;
+  margin: 80px auto 40px; /* avoid header overlap */
+  max-width: 800px;
+  padding: 20px 30px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  position: relative;
+}
+/* Center title */
+.select-station-box h2 {
+  margin-top: 0;
+  text-align: center;
+}
+.select-station-box .back-link {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  text-decoration: none;
+  color: #333;
+  font-size: 16px;
+}
+
+/* Table Styling */
+.select-station-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+.select-station-table th,
+.select-station-table td {
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  text-align: center;
+}
+.select-station-table th {
+  background: #f2f2f2;
+}
+
+/* Player-count area */
+.player-count-wrapper {
+  margin-top: 20px;
+  text-align: left;
+}
+.player-count-wrapper label {
+  font-weight: 600;
+}
+
+/* Buttons */
+.select-station-box .buttons {
+  margin-top: 20px;
+  text-align: center;
+}
+.select-station-box .buttons .green-button {
+  background: #8BC34A;
+}
+.select-station-box .buttons .cancel-btn {
+  background: #2196F3;
+  margin-left: 15px;
+}
+
+/* ============================================================ */
+/*             Styles Specific to bookStation.jsp               */
+/* ============================================================ */
+
+/* Card Container */
+.book-station-container {
+  background: #fff;
+  margin: 80px auto 40px;
+  max-width: 720px;
+  padding: 20px 30px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  position: relative;
+}
+/* Center title */
+.book-station-container h2 {
+  margin-top: 0;
+  text-align: center;
+}
+.book-station-container .back-link {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  text-decoration: none;
+  color: #333;
+  font-size: 16px;
+}
+
+/* Date & View Slots form */
+.book-station-container label {
+  font-weight: 600;
+}
+.book-station-container .view-slots-button {
+  background: #8BC34A;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 10px;
+}
+
+/* Slot-table Styling */
+.slot-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+.slot-table th,
+.slot-table td {
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  text-align: center;
+}
+.slot-table th {
+  background: #2196F3;
+  color: #fff;
+}
+
+/* Next/Cancel buttons */
+.book-station-container .form-actions {
+  margin-top: 20px;
+  text-align: center;
+}
+.book-station-container .form-actions .green-button {
+  background: #8BC34A;
+}
+.book-station-container .form-actions .blue-button {
+  background: #00BCD4;
+}
+.book-station-container .form-actions a {
+  color: #fff;
+}
+
+/* ============================================================ */
+/*            Styles Specific to checkoutBook.jsp               */
+/* ============================================================ */
+
+/* Card Container */
+.checkout-box {
+  background: #fff;
+  max-width: 420px;
+  margin: 80px auto 40px;
+  padding: 25px 30px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  text-align: center;
+  position: relative;
+}
+.checkout-box h2 {
+  margin-top: 0;
+}
+.checkout-box .back-link {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  text-decoration: none;
+  color: #333;
+  font-size: 16px;
+}
+
+/* “Not Refundable” styling */
+.checkout-box .note-text {
+  font-weight: bold;
+  margin: 10px 0;
+}
+.checkout-box .note-text .red-part {
+  color: red;
+}
+.checkout-box .info-line {
+  margin: 8px 0;
+}
+
+/* Buttons */
+.checkout-box .buttons {
+  margin-top: 25px;
+}
+.checkout-box .btn-pay {
+  background: #8BC34A;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+.checkout-box .btn-cancel {
+  background: #00BCD4;
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 14px;
+  margin-left: 10px;
+}
+
+/* ============================================================ */
+/*           Styles Specific to paymentGateway.jsp              */
+/* ============================================================ */
+
+/* Card Container */
+.payment-container {
+  background: #fff;
+  margin: 80px auto 40px;
+  max-width: 450px;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  text-align: center;
+  position: relative;
+}
+.payment-container h2 {
+  margin-top: 0;
+}
+.payment-container .note {
+  color: red;
+  font-weight: bold;
+  margin: 10px 0 20px;
+}
+.payment-container label {
+  display: block;
+  margin: 10px 0 5px;
+  font-weight: 600;
+}
+.payment-container input[type="text"],
+.payment-container input[type="month"] {
+  width: 100%;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+.payment-container .half {
+  width: 48%;
+  display: inline-block;
+  box-sizing: border-box;
+}
+.payment-container .half + .half {
+  float: right;
+}
+.payment-container .card-logos img {
+  height: 32px;
+  margin: 0 8px;
+  vertical-align: middle;
+}
+.payment-container .buttons {
+  margin-top: 25px;
+}
+.payment-container .btn-submit {
+  background: #4CAF50;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.payment-container .btn-back {
+  background: #00BCD4;
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 14px;
+  margin-left: 10px;
+}
+
+/* ============================================================ */
+/*            Styles Specific to paymentSuccess.jsp             */
+/* ============================================================ */
+
+/* Card Container */
+.success-container {
+  background: #fff;
+  margin: 80px auto 40px;
+  max-width: 400px;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  text-align: center;
+}
+.success-container img.checkmark {
+  width: 64px;
+  margin-bottom: 15px;
+}
+.success-container h2 {
+  margin-top: 0;
+  color: #4CAF50;
+}
+.success-container p {
+  margin: 10px 0;
+}
+.success-container .btn-home {
+  background: #00BCD4;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 14px;
+  margin-top: 20px;
+}
+
+
+/* ------------------------------------------- */
+/* Updated .back-link: long-tailed left arrow  */
+/* ------------------------------------------- */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;               /* clickable area width */
+  height: 40px;              /* clickable area height */
+  text-decoration: none;
+  cursor: pointer;
+  outline: none;
+  margin-bottom: 16px;       /* space under the arrow */
+}
+
+/* Base arrow color: dark gray #333 */
+.back-link svg path {
+  stroke: #333;
+}
+
+/* On hover/focus: change arrow to black #000 */
+.back-link:hover svg path,
+.back-link:focus svg path {
+  stroke: #000;
+}
+
+/* Keep the SVG sized appropriately */
+.back-link svg {
+  width: 32px;
+  height: 32px;
+  overflow: visible;         /* ensure stroke caps aren’t clipped */
+}
+
+/* Optional: subtle background highlight on hover */
+.back-link:hover {
+  background-color: rgba(0,0,0,0.05);
+  border-radius: 4px;
 }

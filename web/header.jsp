@@ -6,8 +6,11 @@
        alt="Esports Logo" class="logo esports-logo">
   <h1>NEXGEN ESPORTS</h1>
   <!-- optional user‐avatar slot in top right -->
-  <div style="position:absolute; right:20px; top:23px; display:flex; align-items:center;">
+  <div class="user-avatar">
     <img src="${pageContext.request.contextPath}/images/user.png"
-         alt="User" height="34" style="margin-right:8px;">
+         alt="User">
+    <span style="color:#fff; margin-left:4px;">
+      <%= session.getAttribute("username") != null ? session.getAttribute("username") : "" %>
+    </span>
   </div>
 </div>
