@@ -115,157 +115,157 @@
 
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <title>Book Gaming Station – NexGen Esports</title>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/styles.css">
+    <head>
+        <meta charset="UTF-8">
+            <title>Book Gaming Station – NexGen Esports</title>
+            <link rel="stylesheet" href="${pageContext.request.contextPath}/styles.css">
 
-  <script>
-    // Reload current JSP with the chosen date, stationID & playerCount
-    function reloadWithDate() {
-      const dateInput = document.getElementById('date');
-      if (!dateInput.value) {
-        alert("Please pick a date.");
-        return;
-      }
-      const stationID   = "<%= stationIDParam %>";
-      const playerCount = "<%= playerCount %>";
-      window.location.href = "bookStation.jsp"
-                           + "?stationID="   + stationID
-                           + "&playerCount=" + playerCount
-                           + "&date="        + dateInput.value;
-    }
+                <script>
+                    // Reload current JSP with the chosen date, stationID & playerCount
+                    function reloadWithDate() {
+                        const dateInput = document.getElementById('date');
+                        if (!dateInput.value) {
+                            alert("Please pick a date.");
+                            return;
+                        }
+                        const stationID = "<%= stationIDParam %>";
+                        const playerCount = "<%= playerCount %>";
+                        window.location.href = "bookStation.jsp"
+                                + "?stationID=" + stationID
+                                + "&playerCount=" + playerCount
+                                + "&date=" + dateInput.value;
+                    }
 
-    // Ensure at least one time slot is checked and they are consecutive
-    function validateSelection() {
-      const checkboxes = document.querySelectorAll('input[name="timeSlots"]:checked');
-      if (checkboxes.length === 0) {
-        alert("Please select at least one time slot.");
-        return false;
-      }
-      let times = Array.from(checkboxes).map(cb => parseInt(cb.value)).sort();
-      for (let i = 0; i < times.length - 1; i++) {
-        if (times[i] + 1 !== times[i + 1]) {
-          alert("Please select consecutive time slots without gaps.");
-          return false;
-        }
-      }
-      return true;
-    }
-  </script>
-</head>
-<body>
-  <%@ include file="header.jsp" %>
+                    // Ensure at least one time slot is checked and they are consecutive
+                    function validateSelection() {
+                        const checkboxes = document.querySelectorAll('input[name="timeSlots"]:checked');
+                        if (checkboxes.length === 0) {
+                            alert("Please select at least one time slot.");
+                            return false;
+                        }
+                        let times = Array.from(checkboxes).map(cb => parseInt(cb.value)).sort();
+                        for (let i = 0; i < times.length - 1; i++) {
+                            if (times[i] + 1 !== times[i + 1]) {
+                                alert("Please select consecutive time slots without gaps.");
+                                return false;
+                            }
+                        }
+                        return true;
+                    }
+                </script>
+                </head>
+                <body>
+                    <%@ include file="header.jsp" %>
 
-  <div class="container">
-    <div class="sidebar">
-      <jsp:include page="sidebar.jsp"/>
-    </div>
-    <div class="content">
-      <div class="book-station-container">
-        <!-- Back link top-left -->
-             <!-- UPDATED BACK LINK: long-tailed SVG arrow, dark stroke (#333) -->
-        <a href="javascript:history.back()" class="back-link" aria-label="Go Back">
-  <svg xmlns="http://www.w3.org/2000/svg"
-       viewBox="0 0 24 24"
-       width="32"
-       height="32"
-       aria-hidden="true"
-       focusable="false">
-    <path
-      d="M20 12H8  M8 12l6-6  M8 12l6 6"
-      stroke="#333"
-      stroke-width="2.5"
-      fill="none"
-      stroke-linecap="round"
-      stroke-linejoin="round"/>
-  </svg>
-</a>
+                    <div class="container">
+                        <div class="sidebar">
+                            <jsp:include page="sidebar.jsp"/>
+                        </div>
+                        <div class="content">
+                            <div class="book-station-container">
+                                <!-- Back link top-left -->
+                                <!-- UPDATED BACK LINK: long-tailed SVG arrow, dark stroke (#333) -->
+                                <a href="javascript:history.back()" class="back-link" aria-label="Go Back">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         viewBox="0 0 24 24"
+                                         width="32"
+                                         height="32"
+                                         aria-hidden="true"
+                                         focusable="false">
+                                        <path
+                                            d="M20 12H8  M8 12l6-6  M8 12l6 6"
+                                            stroke="#333"
+                                            stroke-width="2.5"
+                                            fill="none"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"/>
+                                    </svg>
+                                </a>
 
-        <!-- Title -->
-        <h2>Book Gaming Station</h2>
-        <h3>Station Name: <%= stationName %></h3>
-        <h4>Number of Players: <%= playerCount %></h4>
+                                <!-- Title -->
+                                <h2>Book Gaming Station</h2>
+                                <h3>Station Name: <%= stationName %></h3>
+                                <h4>Number of Players: <%= playerCount %></h4>
 
-        <!-- 1) Date-selection form -->
-        <form method="GET" action="bookStation.jsp">
-          <input type="hidden" name="stationID"   value="<%= stationIDParam %>">
-          <input type="hidden" name="playerCount" value="<%= playerCount %>">
+                                <!-- 1) Date-selection form -->
+                                <form method="GET" action="bookStation.jsp">
+                                    <input type="hidden" name="stationID"   value="<%= stationIDParam %>">
+                                        <input type="hidden" name="playerCount" value="<%= playerCount %>">
 
-          <label for="date">Select Date:</label>
-          <input 
-            type="date"
-            id="date"
-            name="date"
-            value="<%= (selectedDate != null) ? selectedDate : "" %>"
-            min="<%= today %>"
-            required
-          >
-          <button type="button" 
-                  class="view-slots-button" 
-                  onclick="reloadWithDate()">
-            View Slots
-          </button>
-        </form>
+                                            <label for="date">Select Date:</label>
+                                            <input 
+                                                type="date"
+                                                id="date"
+                                                name="date"
+                                                value="<%= (selectedDate != null) ? selectedDate : "" %>"
+                                                min="<%= today %>"
+                                                required
+                                                >
+                                                <button type="button" 
+                                                        class="view-slots-button" 
+                                                        onclick="reloadWithDate()">
+                                                    View Slots
+                                                </button>
+                                                </form>
 
-        <% if (selectedDate != null) {
-             DayOfWeek dow = selectedDate.getDayOfWeek();
-             openingHour = (dow == DayOfWeek.FRIDAY || dow == DayOfWeek.SATURDAY) 
-                           ? 15 : 14;
-        %>
+                                                <% if (selectedDate != null) {
+                                                     DayOfWeek dow = selectedDate.getDayOfWeek();
+                                                     openingHour = (dow == DayOfWeek.FRIDAY || dow == DayOfWeek.SATURDAY) 
+                                                                   ? 15 : 14;
+                                                %>
 
-          <h3 style="margin-top: 20px;">
-            Select Time Slots ( <%= playerCount %> Player<%= (playerCount > 1 ? "s" : "") %> ):
-          </h3>
-          <form method="POST" action="checkoutBook.jsp" 
-                onsubmit="return validateSelection()">
-            <input type="hidden" name="stationID"   value="<%= stationIDParam %>">
-            <input type="hidden" name="stationName" value="<%= stationName %>">
-            <input type="hidden" name="playerCount" value="<%= playerCount %>">
-            <input type="hidden" name="date"        value="<%= selectedDate %>">
+                                                <h3 style="margin-top: 20px;">
+                                                    Select Time Slots ( <%= playerCount %> Player<%= (playerCount > 1 ? "s" : "") %> ):
+                                                </h3>
+                                                <form method="POST" action="checkoutBook.jsp" 
+                                                      onsubmit="return validateSelection()">
+                                                    <input type="hidden" name="stationID"   value="<%= stationIDParam %>">
+                                                        <input type="hidden" name="stationName" value="<%= stationName %>">
+                                                            <input type="hidden" name="playerCount" value="<%= playerCount %>">
+                                                                <input type="hidden" name="date"        value="<%= selectedDate %>">
 
-            <table class="slot-table">
-              <thead>
-                <tr>
-                  <th>Time Slot</th>
-                  <th>Availability</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% 
-                  for (int hr = openingHour; hr <= 22; hr++) {
-                      String startLabel = String.format("%02d:00", hr);
-                      String endLabel   = String.format("%02d:59", hr);
-                      boolean isBooked  = bookedHours.contains(hr);
-                %>
-                <tr>
-                  <td><%= startLabel %> – <%= endLabel %></td>
-                  <td>
-                    <% if (isBooked) { %>
-                      <span style="color:red;">Booked</span>
-                    <% } else { %>
-                      <input type="checkbox" name="timeSlots" value="<%= hr %>">
-                    <% } %>
-                  </td>
-                </tr>
-                <% } %>
-              </tbody>
-            </table>
+                                                                    <table class="slot-table">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Time Slot</th>
+                                                                                <th>Availability</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <% 
+                                                                              for (int hr = openingHour; hr <= 22; hr++) {
+                                                                                  String startLabel = String.format("%02d:00", hr);
+                                                                                  String endLabel   = String.format("%02d:59", hr);
+                                                                                  boolean isBooked  = bookedHours.contains(hr);
+                                                                            %>
+                                                                            <tr>
+                                                                                <td><%= startLabel %> – <%= endLabel %></td>
+                                                                                <td>
+                                                                                    <% if (isBooked) { %>
+                                                                                    <span style="color:red;">Booked</span>
+                                                                                    <% } else { %>
+                                                                                    <input type="checkbox" name="timeSlots" value="<%= hr %>">
+                                                                                        <% } %>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <% } %>
+                                                                        </tbody>
+                                                                    </table>
 
-            <div class="form-actions">
-              <button type="submit" class="button green-button">Next</button>
-              <a 
-                href="selectStation.jsp?stationID=<%= stationIDParam %>&playerCount=<%= playerCount %>" 
-                class="button blue-button">
-                Back
-              </a>
-            </div>
-          </form>
-        <% }  /* end if selectedDate != null */ %>
-      </div>
-    </div>
-  </div>
+                                                                    <div class="form-actions">
+                                                                        <button type="submit" class="button green-button">Next</button>
+                                                                        <a 
+                                                                            href="selectStation.jsp?stationID=<%= stationIDParam %>&playerCount=<%= playerCount %>" 
+                                                                            class="button blue-button">
+                                                                            Back
+                                                                        </a>
+                                                                    </div>
+                                                                    </form>
+                                                                    <% }  /* end if selectedDate != null */ %>
+                                                                    </div>
+                                                                    </div>
+                                                                    </div>
 
-  <%@ include file="footer.jsp" %>
-</body>
-</html>
+                                                                    <%@ include file="footer.jsp" %>
+                                                                    </body>
+                                                                    </html>

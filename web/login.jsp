@@ -31,7 +31,6 @@
                 </nav>
             </div>
 
-
             <!-- Main content (centered login box) -->
             <div class="content">
                 <div class="login-container">
@@ -53,7 +52,11 @@
                         <input type="text" id="userID" name="userID" required>
 
                         <label for="password">Password</label>
-                        <input type="password" id="password" name="password" required>
+                        <!-- ===== Wrap input in .password-wrapper so we can place an eye inside ===== -->
+                        <div class="password-wrapper">
+                            <input type="password" id="password" name="password" required>
+                            <span class="eye-icon" id="togglePassword"></span>
+                        </div>
 
                         <a href="#" class="forgot">forgot password</a>
                         <button type="submit">Login</button>
@@ -74,5 +77,35 @@
                 document.body.classList.add('sidebar-collapsed')
             );
         </script>
+
+        <!--
+            ===== UPDATE #1: “Hold to reveal” eye =====
+            When the user presses (mousedown or touchstart) on the eye, we switch
+            password field to type="text". On mouseup/touchend/leave, switch back.
+        -->
+        <script>
+            (function () {
+                const pwdField = document.getElementById('password');
+                const eyeIcon = document.getElementById('togglePassword');
+
+                const showPassword = () => {
+                    pwdField.type = 'text';
+                };
+                const hidePassword = () => {
+                    pwdField.type = 'password';
+                };
+
+                // Desktop events:
+                eyeIcon.addEventListener('mousedown', showPassword);
+                eyeIcon.addEventListener('mouseup', hidePassword);
+                eyeIcon.addEventListener('mouseleave', hidePassword);
+
+                // Mobile (touch) events:
+                eyeIcon.addEventListener('touchstart', showPassword);
+                eyeIcon.addEventListener('touchend', hidePassword);
+            })();
+        </script>
+        <!-- end of UPDATE #1 -->
+
     </body>
 </html>

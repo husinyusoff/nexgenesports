@@ -13,9 +13,8 @@
 
     // 2) RBAC check for /selectStation.jsp (page_id = 12)
     @SuppressWarnings(
-    
-    "unchecked")
-  List<String> roles = (List<String>) sessionObj.getAttribute("effectiveRoles");
+            "unchecked")
+    List<String> roles = (List<String>) sessionObj.getAttribute("effectiveRoles");
     String chosenRole = (String) sessionObj.getAttribute("role");
     String position = (String) sessionObj.getAttribute("position");
     if (roles == null
@@ -86,7 +85,6 @@
             </div>
             <div class="content">
                 <div class="select-station-box">
-
                     <a href="javascript:history.back()" class="back-link" aria-label="Go Back">
                         <svg xmlns="http://www.w3.org/2000/svg"
                              viewBox="0 0 24 24"
@@ -103,10 +101,8 @@
                             stroke-linejoin="round"/>
                         </svg>
                     </a>
-
-
                     <!-- Centered Heading -->
-                    <h2>Select Station &amp; Number of Players</h2>
+                    <h2>SELECT SESSION</h2>
 
                     <form method="GET" action="bookStation.jsp">
                         <table class="select-station-table">

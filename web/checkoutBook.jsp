@@ -13,9 +13,8 @@
 
     // 2) RBAC check for /checkoutBook.jsp (page_id=13)
     @SuppressWarnings(
-    
-    "unchecked")
-  List<String> roles = (List<String>) sessionObj.getAttribute("effectiveRoles");
+            "unchecked")
+    List<String> roles = (List<String>) sessionObj.getAttribute("effectiveRoles");
     String chosenRole = (String) sessionObj.getAttribute("role");
     String position = (String) sessionObj.getAttribute("position");
     if (roles == null

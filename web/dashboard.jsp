@@ -2,57 +2,44 @@
 <%@ page session="true" %>
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Dashboard – NexGen Esports</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+    <head>
+        <title>Dashboard – NexGen Esports</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <jsp:include page="header.jsp"/>
+        <!-- ☰ open button -->
+        <button id="openToggle" class="open-toggle">☰</button>
 
-  <div class="header">
-    <img src="${pageContext.request.contextPath}/images/umt-logo.png"
-         alt="UMT Logo" class="logo umt-logo">
-    <img src="${pageContext.request.contextPath}/images/esports-logo.png"
-         alt="Esports Logo" class="logo esports-logo">
-    <h1>NEXGEN ESPORTS</h1>
-    <div style="position:absolute; right:20px; top:23px; display:flex; align-items:center;">
-      <img src="${pageContext.request.contextPath}/images/user.png"
-           alt="User" height="34" style="margin-right:8px;">
-      <span>${sessionScope.name}</span>
-    </div>
-  </div>
+        <div class="container">
+            <!-- one sidebar wrapper -->
+            <div class="sidebar">
+                <!-- × close button -->
+                <button id="closeToggle" class="close-toggle">×</button>
+                <!-- dynamic links -->
+                <jsp:include page="sidebar.jsp"/>
+            </div>
 
-  <!-- ☰ open button -->
-  <button id="openToggle" class="open-toggle">☰</button>
+            <div class="content">
+                <!-- your dashboard content here -->
+                <div class="dashboard-container">
+                    <img src="${pageContext.request.contextPath}/images/welcome.png"
+                         alt="Welcome" class="welcome-image">
+                </div>
+            </div>
+        </div>
 
-  <div class="container">
-    <!-- one sidebar wrapper -->
-    <div class="sidebar">
-      <!-- × close button -->
-      <button id="closeToggle" class="close-toggle">×</button>
-      <!-- dynamic links -->
-      <jsp:include page="sidebar.jsp"/>
-    </div>
+        <div class="footer">
+            © NexGen Esports 2025 All Rights Reserved.
+        </div>
 
-    <div class="content">
-      <!-- your dashboard content here -->
-      <div class="dashboard-container">
-        <img src="${pageContext.request.contextPath}/images/welcome.png"
-             alt="Welcome" class="welcome-image">
-      </div>
-    </div>
-  </div>
-
-  <div class="footer">
-    © NexGen Esports 2025 All Rights Reserved.
-  </div>
-
-  <script>
-    document.getElementById('openToggle').addEventListener('click', () =>
-      document.body.classList.remove('sidebar-collapsed')
-    );
-    document.getElementById('closeToggle').addEventListener('click', () =>
-      document.body.classList.add('sidebar-collapsed')
-    );
-  </script>
-</body>
+        <script>
+            document.getElementById('openToggle').addEventListener('click', () =>
+                document.body.classList.remove('sidebar-collapsed')
+            );
+            document.getElementById('closeToggle').addEventListener('click', () =>
+                document.body.classList.add('sidebar-collapsed')
+            );
+        </script>
+    </body>
 </html>
