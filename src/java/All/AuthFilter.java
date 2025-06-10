@@ -11,15 +11,15 @@ import java.util.Set;
 public class AuthFilter implements Filter {
 
     private static final Set<String> PUBLIC = Set.of(
-        "/index.jsp",
-        "/login.jsp",
-        "/register.jsp",
-        "/accessDenied.jsp",
-        "/styles.css",
-        "/logout.jsp",
-        "/dbtest.jsp",
-        "/RegisterServlet",
-        "/LoginServlet"
+            "/index.jsp",
+            "/login.jsp",
+            "/register.jsp",
+            "/accessDenied.jsp",
+            "/styles.css",
+            "/logout.jsp",
+            "/dbtest.jsp",
+            "/RegisterServlet",
+            "/LoginServlet"
     );
 
     @Override
@@ -29,12 +29,12 @@ public class AuthFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest rq,
-                         ServletResponse rs,
-                         FilterChain chain)
-                     throws IOException, ServletException {
+            ServletResponse rs,
+            FilterChain chain)
+            throws IOException, ServletException {
 
-        HttpServletRequest  req  = (HttpServletRequest)  rq;
-        HttpServletResponse res  = (HttpServletResponse) rs;
+        HttpServletRequest req = (HttpServletRequest) rq;
+        HttpServletResponse res = (HttpServletResponse) rs;
         String path = req.getServletPath();
 
         // 1) Allow all public resources (login, register, CSS, etc.)
@@ -60,7 +60,7 @@ public class AuthFilter implements Filter {
         @SuppressWarnings("unchecked")
         List<String> effectiveRoles = (List<String>) session.getAttribute("effectiveRoles");
         String chosenRole = (String) session.getAttribute("role");     // exact role picked
-        String position   = (String) session.getAttribute("position"); // may be null
+        String position = (String) session.getAttribute("position"); // may be null
 
         if (effectiveRoles == null || effectiveRoles.isEmpty() || chosenRole == null) {
             res.sendRedirect(req.getContextPath() + "/accessDenied.jsp");
@@ -69,7 +69,7 @@ public class AuthFilter implements Filter {
 
         // 5) Check permission via PermissionChecker
         boolean allowed = PermissionChecker.hasAccess(
-            effectiveRoles, chosenRole, position, path
+                effectiveRoles, chosenRole, position, path
         );
         if (allowed) {
             chain.doFilter(rq, rs);

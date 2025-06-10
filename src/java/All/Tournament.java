@@ -9,5 +9,5 @@ package All;
  * @author husin
  */
 class Tournament {
-    
+
 }
