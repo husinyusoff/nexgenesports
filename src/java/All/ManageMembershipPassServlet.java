@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 @WebServlet("/manageMembershipPass")
-public class MembershipPassViewServlet extends HttpServlet {
+public class ManageMembershipPassServlet extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
@@ -122,7 +122,7 @@ public class MembershipPassViewServlet extends HttpServlet {
       req.setAttribute("nextSession", nextSession);
       req.setAttribute("latestPass",  latestPass);
       req.setAttribute("allTiers",    allTiers);
-      req.getRequestDispatcher("/membershipPass.jsp")
+      req.getRequestDispatcher("/manageMembershipPass.jsp")
          .forward(req, resp);
     }
     catch (Exception e) {

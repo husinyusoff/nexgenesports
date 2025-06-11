@@ -1,71 +1,87 @@
-<%@ page import="java.util.*" %>
-<%@ page contentType="text/html; charset=UTF-8" session="true" %>
-<%
-  if (session.getAttribute("username") == null) {
-    response.sendRedirect("login.jsp");
-    return;
-  }
-
-  boolean isClub = "club".equals(request.getParameter("type"));
-  boolean isPass = "pass".equals(request.getParameter("type"));
-  String title = isClub
-               ? "Club Membership Payment"
-               : (isPass ? "Monthly Pass Payment" : "Checkout");
-%>
+<%@page import="java.time.temporal.ChronoUnit"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="java.sql.Date, java.time.*"%>
+<%@ page import="java.util.Map"%>
+<%@ page session="true" %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title><%= title %> – NexGen Esports</title>
+  <title>CHECKOUT – NexGen Esports</title>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/styles.css">
 </head>
-<body>
-  <jsp:include page="header.jsp"/>
-  <div class="card">
-    <h2><%= title %></h2>
-    <div class="summary">
-      <% if (isClub) { %>
-        <p><strong>Membership:</strong> <%= request.getParameter("sessionName") %></p>
-        <p><strong>Price:</strong> RM<%= request.getParameter("fee") %></p>
-      <% } else if (isPass) { %>
-        <p><strong>Pass Tier:</strong> <%= request.getParameter("tierName") %></p>
-        <p><strong>Price:</strong> RM<%= request.getParameter("price") %></p>
-      <% } %>
+<body class="checkout-page">
+  <%@ include file="header.jsp" %>
+  <div class="container">
+    <div class="sidebar"><jsp:include page="sidebar.jsp"/></div>
+    <div class="content">
+      <div class="content-card">
+        <h2>CHECKOUT</h2>
+        <div class="summary">
+          <%
+            String type = request.getParameter("type");
+            if ("booking".equals(type)) {
+              // Booking summary
+              out.write("<p><strong>Station:</strong> "   + request.getParameter("stationName") + "</p>");
+              out.write("<p><strong>Date:</strong> "      + request.getParameter("date")        + "</p>");
+              out.write("<p><strong>Start Time:</strong> " + request.getParameter("startTime")   + "</p>");
+              out.write("<p><strong>End Time:</strong> "   + request.getParameter("endTime")     + "</p>");
+              out.write("<p><strong>Players:</strong> "    + request.getParameter("playerCount") + "</p>");
+              out.write("<p><strong>Total Price:</strong> RM" + request.getParameter("totalPrice")+ "</p>");
+            }
+            else if ("club".equals(type)) {
+              // Club membership summary
+              String sid  = request.getParameter("sessionId");
+              String name = request.getParameter("sessionName");
+              String fee  = request.getParameter("fee");
+              Date start=null, end=null;
+              try (java.sql.Connection c = All.DBConnection.getConnection();
+                   java.sql.PreparedStatement p = c.prepareStatement(
+                     "SELECT startMembershipDate,endMembershipDate FROM membershipsessions WHERE sessionId=?")) {
+                p.setString(1, sid);
+                try (java.sql.ResultSet r = p.executeQuery()) {
+                  if (r.next()) { start = r.getDate(1); end = r.getDate(2); }
+                }
+              }
+              out.write("<p><strong>Membership:</strong> " + name + "</p>");
+              out.write("<p><strong>Start Date:</strong> "   + start + "</p>");
+              out.write("<p><strong>Expiry Date:</strong> "  + end   + "</p>");
+              out.write("<p><strong>Fee:</strong> RM"        + fee   + "</p>");
+            }
+            else if ("pass".equals(type)) {
+              // Gaming pass extension summary
+              LocalDate today      = LocalDate.now();
+              LocalDate currExpiry = LocalDate.parse(request.getParameter("currentExpiry"));
+              int planLength       = Integer.parseInt(request.getParameter("planLength"));
+              long daysLeft        = ChronoUnit.DAYS.between(today, currExpiry);
+              if (daysLeft < 0) daysLeft = 0;
+              LocalDate newExpiry  = today.plusDays(daysLeft + planLength);
+              out.write("<p><strong>Pass Tier:</strong> "     + request.getParameter("tierName") + "</p>");
+              out.write("<p><strong>Days Remaining:</strong> " + daysLeft + "</p>");
+              out.write("<p><strong>Plan Length:</strong> "    + planLength + " days</p>");
+              out.write("<p><strong>New Expiry:</strong> "      + newExpiry + "</p>");
+              out.write("<p><strong>Price:</strong> RM"         + request.getParameter("price") + "</p>");
+            }
+          %>
+        </div>
+        <div class="buttons">
+          <form action="paymentGateway.jsp" method="post">
+            <% // carry every parameter forward %>
+            <%
+              for (Map.Entry<String,String[]> e : request.getParameterMap().entrySet()) {
+                for (String v : e.getValue()) {
+                  out.write("<input type=\"hidden\" name=\"" 
+                            + e.getKey() + "\" value=\"" + v + "\"/>");
+                }
+              }
+            %>
+            <button type="submit" class="btn-submit">PAY NOW</button>
+            <a href="dashboard.jsp" class="btn-back">CANCEL</a>
+          </form>
+        </div>
+      </div>
     </div>
-
-    <form method="post" action="${pageContext.request.contextPath}/confirmPayment">
-      <% 
-        for (Map.Entry<String,String[]> e : request.getParameterMap().entrySet()) {
-          for (String v : e.getValue()) {
-      %>
-      <input type="hidden" name="<%= e.getKey() %>" value="<%= v %>"/>
-      <%
-          }
-        }
-      %>
-
-      <label>Card Number</label>
-      <input type="text" name="cardNumber" required maxlength="16"/>
-
-      <label>Name on Card</label>
-      <input type="text" name="cardName" required/>
-
-      <div class="half">
-        <label>Expiry (MM/YY)</label>
-        <input type="month" name="expiryDate" required
-               min="<%= java.time.YearMonth.now() %>"/>
-      </div>
-      <div class="half">
-        <label>CVV</label>
-        <input type="text" name="cvv" required maxlength="4"/>
-      </div>
-
-      <div class="buttons">
-        <button type="submit" class="btn-submit">Submit Payment</button>
-        <a href="membershipPass.jsp" class="btn-back">Cancel</a>
-      </div>
-    </form>
   </div>
-  <jsp:include page="footer.jsp"/>
+  <%@ include file="footer.jsp" %>
 </body>
 </html>

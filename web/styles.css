@@ -348,136 +348,6 @@ body.sidebar-collapsed .close-toggle {
 }
 
 /* ============================================================ */
-/*            Styles Specific to clubMembership.jsp            */
-/* ============================================================ */
-.club-membership-container {
-    background: #fff;
-    margin: 0 auto;
-    max-width: 720px;
-    padding: 20px 30px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    position: relative;
-}
-.club-membership-container h2 {
-    text-align: center;
-    margin-top: -32px;
-    margin-bottom: 30px;
-}
-.club-membership-container .btnBack {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    text-decoration: none;
-    color: #333;
-    font-size: 14px;
-}
-
-/* === UPDATE #2: MATCH MONTHLY PASS BORDERS EXACTLY === */
-.membership-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 24px;
-}
-.membership-table th,
-.membership-table td {
-    border: 1px solid #ccc;
-    padding: 8px 12px;
-    text-align: center;
-}
-.membership-table th {
-    background: #38b6ff;
-    color: #fff;
-}
-.renew-btn {
-    background-color: #4caf50;
-    color: white;
-    padding: 6px 12px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 13px;
-}
-.renew-btn:hover {
-    background-color: #45a049;
-}
-
-/* === Club Membership Benefits table === */
-.clubBenefitsTable {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 32px;
-    background: #fff;
-}
-.clubBenefitsTable th,
-.clubBenefitsTable td {
-    border: 1px solid #ccc;
-    padding: 8px 12px;
-    text-align: left;
-}
-.clubBenefitsTable th {
-    background: #38b6ff;
-    color: #fff;
-}
-
-/* ============================================================ */
-/*           Styles Specific to monthlyPass.jsp                */
-/* ============================================================ */
-.monthly-pass-container {
-    background: #fff;
-    margin: 0 auto;
-    max-width: 720px;
-    padding: 20px 30px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    position: relative;
-}
-.monthly-pass-container h2 {
-    text-align: center;
-    margin-top: -32px;
-    margin-bottom: 30px;
-}
-.monthly-pass-container .btnBack {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    text-decoration: none;
-    color: #333;
-    font-size: 14px;
-}
-.pass-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 24px;
-}
-.pass-table th,
-.pass-table td {
-    border: 1px solid #ccc;
-    padding: 8px 12px;
-    text-align: center;
-}
-.pass-table th {
-    background: #38b6ff;
-    color: #fff;
-}
-.benefitsTable {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 40px;
-    background: #fff;
-}
-.benefitsTable th,
-.benefitsTable td {
-    border: 1px solid #ccc;
-    padding: 8px 12px;
-    text-align: center;
-}
-.benefitsTable th {
-    background: #38b6ff;
-    color: #fff;
-}
-
-/* ============================================================ */
 /*            Styles Specific to selectStation.jsp             */
 /* ============================================================ */
 .select-station-box {
@@ -886,3 +756,191 @@ body.sidebar-collapsed .close-toggle {
 .btn-buy:hover {
     background-color: #00b0ff;
 }
+
+
+/* ============================================================ */
+/*                Styles Specific to checkout.jsp              */
+/* ============================================================ */
+.checkout-page .container {
+    justify-content: flex-start;
+    padding-top: 100px; /* same as your other pages */
+}
+
+.checkout-page .content-card {
+    background: #fff;
+    max-width: 480px;
+    margin: 40px auto;
+    padding: 24px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    text-align: left;
+}
+
+.checkout-page .content-card h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.checkout-page .summary {
+    margin-bottom: 24px;
+}
+
+.checkout-page .summary p {
+    margin: 8px 0;
+    font-size: 1rem;
+}
+
+.checkout-page .buttons {
+    margin-top: 24px;
+}
+
+.checkout-page .buttons .btn-submit {
+    margin-right: 12px;
+}
+
+.checkout-page .buttons .btn-back {
+    font-size: 0.9rem;
+    vertical-align: middle;
+}
+
+
+/* ==============================================================
+   Part 5: Styles for checkout.jsp and manageMembershipPass.jsp
+   ============================================================== */
+
+/* ---------------- Checkout Page ---------------- */
+.checkout-page .content-card {
+    background: #fff;
+    max-width: 500px;
+    margin: 60px auto;
+    padding: 32px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.checkout-page .content-card h2 {
+    text-transform: uppercase;
+    font-size: 1.6rem;
+    margin-bottom: 24px;
+}
+.checkout-page .summary p {
+    font-size: 1rem;
+    margin: 12px 0;
+}
+.checkout-page .buttons {
+    text-align: center;
+    margin-top: 32px;
+}
+.checkout-page .btn-submit {
+    padding: 10px 24px;
+    font-size: 1rem;
+}
+.checkout-page .btn-back {
+    margin-left: 16px;
+    font-size: 0.9rem;
+}
+
+/* ------------- Manage Membership & Pass Page ------------- */
+.manage-membership-page .card {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+    background: #fff;
+}
+.manage-membership-page .card-header h1 {
+    text-transform: uppercase;
+    font-size: 1.8rem;
+    margin: 0;
+}
+.manage-membership-page .summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 32px;
+}
+.manage-membership-page .summary-table th,
+.manage-membership-page .summary-table td {
+    border: 1px solid #ccc;
+    padding: 12px 16px;
+    text-align: center;
+}
+.manage-membership-page .summary-table th {
+    background: #38b6ff;
+    color: #fff;
+    text-transform: uppercase;
+}
+.manage-membership-page .btn-renew,
+.manage-membership-page .btn-buy {
+    padding: 8px 20px;
+    font-size: 1rem;
+    text-transform: uppercase;
+}
+
+/* ==================================================
+   Two-Tab Nav (both labels) – Manage Membership & Pass
+   ================================================== */
+/* Two-label nav with gap */
+.manage-membership-page .tab-switcher {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    margin: 24px 0;
+}
+.manage-membership-page .tab-btn {
+    font-size: 1.4rem;
+    color: #333;
+    cursor: pointer;
+    transition: color .2s;
+}
+.manage-membership-page .tab-btn.disabled {
+    color: #ccc;
+    cursor: default;
+}
+.manage-membership-page .tab-label {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #777;
+    cursor: pointer;
+    transition: color .2s;
+}
+.manage-membership-page .tab-label.active {
+    color: #38b6ff;
+}
+
+/* Panel show/hide */
+.manage-membership-page .panel {
+    display: none;
+}
+.manage-membership-page .panel.active {
+    display: block;
+}
+
+/* Disabled buttons */
+.manage-membership-page button[disabled],
+.checkout-page button[disabled] {
+    background: #e0e0e0 !important;
+    color: #9e9e9e !important;
+    cursor: default !important;
+}
+/* ─────────────────────────────────────────────────────────────
+   Remove bottom border on the last row of benefits tables
+   ───────────────────────────────────────────────────────────── */
+.benefits-table tbody tr:last-child td {
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Club Membership: center the Renew button in its cell
+   ───────────────────────────────────────────────────────────── */
+.benefits-table.club tbody tr:last-child td {
+    text-align: center;
+}
+
+/* (Pass table: buttons already live under each column, 
+   no extra centering needed—they’ll remain left‐aligned 
+   under their respective <td>.) */
