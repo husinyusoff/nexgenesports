@@ -1,43 +1,31 @@
-<%@ page import="All.PermissionChecker" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" session="true" %>
 <%@ page import="java.util.List" %>
-<%@ page session="true" %>
+<%@ page import="All.PermissionChecker" %>
+
 <%
     @SuppressWarnings("unchecked")
     List<String> roles      = (List<String>) session.getAttribute("effectiveRoles");
     String       chosenRole = (String) session.getAttribute("role");
     String       position   = (String) session.getAttribute("position");
     if (roles == null || chosenRole == null) {
-        return; // no sidebar if not logged in
+        return;  // nothing to render if not logged in
     }
+    String ctx = request.getContextPath();  // ← use the implicit request
 %>
-<nav>
+<nav class="sidebar-nav">
   <ul>
     <!-- Dashboard -->
-    <li>
-      <a href="${pageContext.request.contextPath}/dashboard.jsp">Dashboard</a>
-    </li>
+    <li><a href="<%=ctx%>/dashboard.jsp">Dashboard</a></li>
 
-    <!-- Profile dropdown -->
+    <!-- Profile -->
     <li class="dropdown">
       <a href="javascript:void(0)" class="dropdown-btn">Profile</a>
       <ul class="dropdown-content">
-        <li>
-          <a href="${pageContext.request.contextPath}/manageProfile.jsp">
-            My Profile
-          </a>
-        </li>
-        <% if (PermissionChecker.hasAccess(roles, chosenRole, position, "/inGameProfile.jsp")) { %>
-        <li>
-          <a href="${pageContext.request.contextPath}/inGameProfile.jsp">
-            In-Game Profile
-          </a>
-        </li>
+        <li><a href="<%=ctx%>/manageProfile.jsp">My Profile</a></li>
+        <% if (PermissionChecker.hasAccess(roles, chosenRole, position, "/inGameProfile")) { %>
+          <li><a href="<%=ctx%>/inGameProfile">In-Game Profile</a></li>
         <% } %>
-        <li>
-          <a href="${pageContext.request.contextPath}/manageMembershipPass">
-            Membership &amp; Pass
-          </a>
-        </li>
+        <li><a href="<%=ctx%>/membershipPass.jsp">Membership &amp; Pass</a></li>
       </ul>
     </li>
 
@@ -46,45 +34,38 @@
       <a href="javascript:void(0)" class="dropdown-btn">Multiplayer Lounge</a>
       <ul class="dropdown-content">
         <% if (PermissionChecker.hasAccess(roles, chosenRole, position, "/selectStation.jsp")) { %>
-        <li>
-          <a href="${pageContext.request.contextPath}/selectStation.jsp">
-            Book Gaming Session
-          </a>
-        </li>
+          <li><a href="<%=ctx%>/selectStation.jsp">Book Gaming Session</a></li>
         <% } %>
         <% if (PermissionChecker.hasAccess(roles, chosenRole, position, "/manageBooking.jsp")) { %>
-        <li>
-          <a href="${pageContext.request.contextPath}/manageBooking.jsp">
-            Manage Booking
-          </a>
-        </li>
+          <li><a href="<%=ctx%>/manageBooking.jsp">Manage My Booking</a></li>
         <% } %>
-        <% if ("president".equals(position)
-              && PermissionChecker.hasAccess(roles, chosenRole, position, "/manageAllBooking.jsp")) { %>
-        <li>
-          <a href="${pageContext.request.contextPath}/manageAllBooking.jsp">
-            Manage All Booking
-          </a>
-        </li>
-        <% } %>
-        <% if (PermissionChecker.hasAccess(roles, chosenRole, position, "/calendar.jsp")) { %>
-        <li>
-          <a href="${pageContext.request.contextPath}/calendar.jsp">
-            Calendar
-          </a>
-        </li>
+        <% if (PermissionChecker.hasAccess(roles, chosenRole, position, "/manageAllBooking.jsp")) { %>
+          <li><a href="<%=ctx%>/manageAllBooking.jsp">Manage All Booking</a></li>
         <% } %>
       </ul>
     </li>
 
-    <!-- Payment -->
-    <li>
-      <a href="${pageContext.request.contextPath}/paymentGateway.jsp">Payment</a>
-    </li>
+    <!-- Team Management -->
+    <% if (PermissionChecker.hasAccess(roles, chosenRole, position, "/team")) { %>
+      <li><a href="<%=ctx%>/team">Team Management</a></li>
+    <% } %>
+
+    <!-- Achievements -->
+    <% if (PermissionChecker.hasAccess(roles, chosenRole, position, "/achievements")) { %>
+      <li><a href="<%=ctx%>/achievements">Achievements</a></li>
+    <% } %>
+
+    <!-- Notifications -->
+    <% if (PermissionChecker.hasAccess(roles, chosenRole, position, "/notifications")) { %>
+      <li><a href="<%=ctx%>/notifications">Notifications</a></li>
+    <% } %>
+
+    <!-- Audit Log -->
+    <% if (PermissionChecker.hasAccess(roles, chosenRole, position, "/auditLog")) { %>
+      <li><a href="<%=ctx%>/auditLog">Audit Log</a></li>
+    <% } %>
 
     <!-- Logout -->
-    <li class="logout-btn">
-      <a href="${pageContext.request.contextPath}/logout.jsp">Logout</a>
-    </li>
+    <li class="logout-btn"><a href="<%=ctx%>/logout.jsp">Logout</a></li>
   </ul>
 </nav>
