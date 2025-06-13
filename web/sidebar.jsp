@@ -4,15 +4,15 @@
 
 <%
     @SuppressWarnings("unchecked")
-    List<String> roles      = (List<String>) session.getAttribute("effectiveRoles");
-    String       chosenRole = (String) session.getAttribute("role");
-    String       position   = (String) session.getAttribute("position");
+    List<String> roles       = (List<String>) session.getAttribute("effectiveRoles");
+    String       chosenRole  = (String) session.getAttribute("role");
+    String       position    = (String) session.getAttribute("position");
     if (roles == null || chosenRole == null) {
         return;  // nothing to render if not logged in
     }
     String ctx = request.getContextPath();  // ← use the implicit request
 %>
-<nav class="sidebar-nav">
+<nav>
   <ul>
     <!-- Dashboard -->
     <li><a href="<%=ctx%>/dashboard.jsp">Dashboard</a></li>
@@ -25,7 +25,7 @@
         <% if (PermissionChecker.hasAccess(roles, chosenRole, position, "/inGameProfile")) { %>
           <li><a href="<%=ctx%>/inGameProfile">In-Game Profile</a></li>
         <% } %>
-        <li><a href="<%=ctx%>/membershipPass.jsp">Membership &amp; Pass</a></li>
+        <li><a href="<%=ctx%>/manageMembershipPass">Membership &amp; Pass</a></li>
       </ul>
     </li>
 
@@ -48,11 +48,6 @@
     <!-- Team Management -->
     <% if (PermissionChecker.hasAccess(roles, chosenRole, position, "/team")) { %>
       <li><a href="<%=ctx%>/team">Team Management</a></li>
-    <% } %>
-
-    <!-- Achievements -->
-    <% if (PermissionChecker.hasAccess(roles, chosenRole, position, "/achievements")) { %>
-      <li><a href="<%=ctx%>/achievements">Achievements</a></li>
     <% } %>
 
     <!-- Notifications -->
